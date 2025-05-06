@@ -1,0 +1,24 @@
+services:
+  teatronik.api:
+    image: ${DOCKER_REGISTRY-}teatronikapi
+    build:
+      context: .
+      dockerfile: Teatronik.API/Dockerfile
+    depends_on:
+      - postgres
+
+  postgres:
+    container_name: postgres
+    image: postgres
+    restart: always
+    environment:
+      POSTGRES_DB: teatronik_DB
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: my_strong_password
+    ports:
+      - 5432:5432
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+
+volumes:
+  postgres-data:

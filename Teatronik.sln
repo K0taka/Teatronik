@@ -1,0 +1,43 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.11.35222.181
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Teatronik.API", "Teatronik.API\Teatronik.API.csproj", "{F633B304-1A97-4ED3-B9DB-0DEEE03A789D}"
+EndProject
+Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{C7FD5B52-8127-465A-A46D-2E589F51E680}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Teatronik.Core", "..\Teatronik.Core\Teatronik.Core.csproj", "{CB044BE8-0603-4F2B-9550-5DA6FF82D023}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Teatronik.Infrastructure", "..\Teatronik.Infrastructure\Teatronik.Infrastructure.csproj", "{9DE91D69-C0B5-4146-A583-A79EE71B6C18}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{F633B304-1A97-4ED3-B9DB-0DEEE03A789D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F633B304-1A97-4ED3-B9DB-0DEEE03A789D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F633B304-1A97-4ED3-B9DB-0DEEE03A789D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F633B304-1A97-4ED3-B9DB-0DEEE03A789D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C7FD5B52-8127-465A-A46D-2E589F51E680}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C7FD5B52-8127-465A-A46D-2E589F51E680}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C7FD5B52-8127-465A-A46D-2E589F51E680}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C7FD5B52-8127-465A-A46D-2E589F51E680}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CB044BE8-0603-4F2B-9550-5DA6FF82D023}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CB044BE8-0603-4F2B-9550-5DA6FF82D023}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CB044BE8-0603-4F2B-9550-5DA6FF82D023}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CB044BE8-0603-4F2B-9550-5DA6FF82D023}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9DE91D69-C0B5-4146-A583-A79EE71B6C18}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9DE91D69-C0B5-4146-A583-A79EE71B6C18}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9DE91D69-C0B5-4146-A583-A79EE71B6C18}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9DE91D69-C0B5-4146-A583-A79EE71B6C18}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {45B6C469-2871-4F30-B949-34D9B00F87AF}
+	EndGlobalSection
+EndGlobal
