@@ -48,5 +48,11 @@ namespace Teatronik.Core.Models
             PropId = propId;
             return Result.Ok();
         }
+
+        public Result DetachFromProp()
+        {
+            PropId = null;
+            return Result.Ok();
+        }
     }
 }

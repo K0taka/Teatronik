@@ -34,7 +34,7 @@ namespace Teatronik.Core.Models
             return Result<ComponentModel>.Ok(new(modelName, typeId, kindId));
         }
 
-        public Result ChangeName(string newName)
+        public Result UpdateName(string newName)
         {
             if (string.IsNullOrWhiteSpace(newName))
                 return Result.Fail("name must be not empty");
@@ -42,7 +42,7 @@ namespace Teatronik.Core.Models
             return Result.Ok();
         }
 
-        public Result ChangeType(Guid typeId)
+        public Result UpdateType(Guid typeId)
         {
             if (typeId.Equals(Guid.Empty))
                 return Result.Fail("typeId must be not empty");
@@ -51,7 +51,7 @@ namespace Teatronik.Core.Models
             return Result.Ok();
         }
 
-        public Result ChangeKind(Guid kindId)
+        public Result UpdateKind(Guid kindId)
         {
             if (kindId.Equals(Guid.Empty))
                 return Result.Fail("kindId must be not empty");
