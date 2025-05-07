@@ -1,7 +1,102 @@
-﻿namespace Teatronik.Core.Models
-{
-    public class User
-    {
+﻿using Teatronik.Core.Common;
+using Teatronik.Core.Enums;
 
+namespace Teatronik.Core.Models
+{
+    public partial class User
+    {
+        public const int MIN_PASSWORD_LENGTH = 8;
+
+        public Guid Id { get; }
+        public string FullName { get; private set; }
+        public string Email { get; private set; }
+        public string PasswordHash { get; private set; }
+        public DateTime RegistrationDate { get; }
+        public List<RoleType> Roles { get; private set; } = [];
+
+        private User(Guid id, string fullName, string email, string passwordHash, DateTime registrationDate)
+        {
+            Id = id;
+            FullName = fullName;
+            Email = email;
+            PasswordHash = passwordHash;
+            RegistrationDate = registrationDate;
+        }
+
+        public static Result<User> Create(string fullName, string email, string password)
+        {
+            if (string.IsNullOrWhiteSpace(fullName))
+                return Result<User>.Fail("Full name is required");
+
+            if (string.IsNullOrWhiteSpace(email) || !IsValidEmail(email))
+                return Result<User>.Fail("Invalid email");
+
+            if (string.IsNullOrWhiteSpace(password) || password.Length < MIN_PASSWORD_LENGTH)
+                return Result<User>.Fail("Password must be at least 8 characters");
+
+            var passwordHash = BCrypt.Net.BCrypt.HashPassword(password);
+
+            return Result<User>.Ok(new(
+                Guid.NewGuid(),
+                fullName.Trim(),
+                email.Trim().ToLower(),
+                passwordHash,
+                DateTime.UtcNow));
+        }
+
+        public Result ChangePassword(string oldPassword, string newPassword)
+        {
+            if (!VerifyPassword(oldPassword))
+                return Result.Fail("Old password didn't match");
+
+
+            if (string.IsNullOrWhiteSpace(newPassword) || newPassword.Length < MIN_PASSWORD_LENGTH)
+                return Result.Fail("New password must be at least 8 characters");
+            PasswordHash = BCrypt.Net.BCrypt.HashPassword(newPassword);
+            return Result.Ok();
+        }
+
+        public Result UpdateDetails(string newFullName, string newEmail)
+        {
+            if (string.IsNullOrWhiteSpace(newFullName))
+                return Result.Fail("Full name is required");
+
+            if (string.IsNullOrWhiteSpace(newEmail) || !IsValidEmail(newEmail))
+                return Result.Fail("Invalid email");
+
+
+            FullName = newFullName;
+            Email = newEmail;
+            return Result.Ok();
+        }
+
+        public Result UpdateName(string newName) => UpdateDetails(newName, Email);
+        public Result UpdateEmail(string newEmail) => UpdateDetails(FullName, newEmail);
+
+        public bool VerifyPassword(string password) =>
+            !PasswordHash.Equals(string.Empty) && BCrypt.Net.BCrypt.Verify(password, PasswordHash);
+
+        public Result AssignRole(RoleType role)
+        {
+            if (!Roles.Contains(role))
+            {
+                Roles.Add(role);
+                return Result.Ok();
+            }
+            return Result.Fail("Role already assigned");
+        }
+
+        public Result RemoveRole(RoleType role)
+        {
+            var result = Roles.Remove(role);
+            return result ? Result.Ok() : Result.Fail("Role not found");
+        }
+
+        private static bool IsValidEmail(string email) =>
+            EmailRegex().IsMatch(email);
+        
+        
+        [System.Text.RegularExpressions.GeneratedRegex(@"^[^@\s]+@[^@\s]+\.[^@\s]+$")]
+        private static partial System.Text.RegularExpressions.Regex EmailRegex();
     }
 }
