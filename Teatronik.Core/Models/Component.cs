@@ -39,6 +39,10 @@ namespace Teatronik.Core.Models
 
             return Result<Component>.Ok(new(serialNumber, acquisitionDate, modelId, propId));
         }
+        
+        public static Result<Component> Initialize(
+            string serialNumber, DateOnly acquisitionDate, Guid modelId, Guid? propId = null
+            ) => Create(serialNumber,acquisitionDate, modelId, propId);
 
         public Result AssignToProp(Guid propId)
         {

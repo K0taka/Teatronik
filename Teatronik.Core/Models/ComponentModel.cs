@@ -22,8 +22,14 @@ namespace Teatronik.Core.Models
         private ComponentModel(string modelName, Guid typeId, Guid kindId) :
             this(Guid.NewGuid(), modelName, typeId, kindId) {}
 
-        public static Result<ComponentModel> Create(string modelName, Guid typeId, Guid kindId)
+        public static Result<ComponentModel> Create(string modelName, Guid typeId, Guid kindId) => 
+            Initialize(Guid.NewGuid(), modelName, typeId, kindId);
+
+        public static Result<ComponentModel> Initialize(Guid id, string modelName, Guid typeId, Guid kindId)
         {
+            if (Guid.Empty.Equals(id))
+                return Result<ComponentModel>.Fail("Model id must be initialized");
+
             if (string.IsNullOrWhiteSpace(modelName))
                 return Result<ComponentModel>.Fail("model name must be not empty");
 
@@ -36,7 +42,7 @@ namespace Teatronik.Core.Models
             if (kindId.Equals(Guid.Empty))
                 return Result<ComponentModel>.Fail("kindId must be not empty");
 
-            return Result<ComponentModel>.Ok(new(modelName, typeId, kindId));
+            return Result<ComponentModel>.Ok(new(id, modelName, typeId, kindId));
         }
 
         public Result UpdateName(string newName)

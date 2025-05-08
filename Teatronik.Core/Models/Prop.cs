@@ -21,8 +21,12 @@ namespace Teatronik.Core.Models
 
         private Prop(string propName, DateOnly created, Guid schemaId) : this(Guid.NewGuid(), propName, created, schemaId) {}
 
-        public static Result<Prop> Create(string propName, DateOnly created, Guid schemaId)
+        public static Result<Prop> Create(string propName, DateOnly created, Guid schemaId) => Initialize(Guid.NewGuid(), propName, created, schemaId);
+
+        public static Result<Prop> Initialize(Guid id, string propName, DateOnly created, Guid schemaId)
         {
+            if (Guid.Empty.Equals(id))
+                return Result<Prop>.Fail("Id must be not empty");
             if (string.IsNullOrWhiteSpace(propName))
                 return Result<Prop>.Fail("Prop name must be not empty");
             if (propName.Length > MAX_PROP_NAME_LENGTH)
@@ -32,7 +36,7 @@ namespace Teatronik.Core.Models
             if (schemaId.Equals(Guid.Empty))
                 return Result<Prop>.Fail("Schema Id must be not empty");
 
-            return Result<Prop>.Ok(new(propName, created, schemaId));
+            return Result<Prop>.Ok(new(id, propName, created, schemaId));
         }
 
         public Result UpdateName(string propName)

@@ -28,6 +28,19 @@ namespace Teatronik.Core.Models
 
         public static Result<User> Create(string fullName, string email, string password)
         {
+            if (string.IsNullOrWhiteSpace(password) || password.Length < MIN_PASSWORD_LENGTH)
+                return Result<User>.Fail("Password must be at least 8 characters");
+
+            var passwordHash = BCrypt.Net.BCrypt.HashPassword(password);
+
+            return Initialize(Guid.NewGuid(), fullName, email, passwordHash, DateTime.UtcNow);
+        }
+
+        public static Result<User> Initialize(Guid id, string fullName, string email, string passwordHash, DateTime dateTime)
+        {
+            if (Guid.Empty.Equals(id))
+                return Result<User>.Fail("id must be inited");
+
             if (string.IsNullOrWhiteSpace(fullName))
                 return Result<User>.Fail("Full name is required");
 
@@ -40,18 +53,12 @@ namespace Teatronik.Core.Models
             if (string.IsNullOrWhiteSpace(email) || !IsValidEmail(email))
                 return Result<User>.Fail("Invalid email");
 
-
-            if (string.IsNullOrWhiteSpace(password) || password.Length < MIN_PASSWORD_LENGTH)
-                return Result<User>.Fail("Password must be at least 8 characters");
-
-            var passwordHash = BCrypt.Net.BCrypt.HashPassword(password);
-
             return Result<User>.Ok(new(
-                Guid.NewGuid(),
+                id,
                 fullName.Trim(),
                 email.Trim().ToLower(),
                 passwordHash,
-                DateTime.UtcNow));
+                dateTime));
         }
 
         public Result ChangePassword(string oldPassword, string newPassword)

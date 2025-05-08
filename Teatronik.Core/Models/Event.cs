@@ -51,8 +51,21 @@ namespace Teatronik.Core.Models
             Guid seasonId,
             string? theme = null,
             int? spectators = null
+            ) => Initialize(Guid.NewGuid(),eventName, dateTime, duration, seasonId, theme, spectators);
+
+        public static Result<Event> Initialize(
+            Guid id,
+            string eventName,
+            DateTime dateTime,
+            int duration,
+            Guid seasonId,
+            string? theme = null,
+            int? spectators = null
             )
         {
+            if (Guid.Empty.Equals(id))
+                return Result<Event>.Fail("Id must be not empty");
+
             if (string.IsNullOrWhiteSpace(eventName))
                 return Result<Event>.Fail("Event name must be not empty");
 
@@ -71,7 +84,7 @@ namespace Teatronik.Core.Models
             if (spectators != null && spectators < 0)
                 return Result<Event>.Fail("Spectatorn must be non-negative number");
 
-            return Result<Event>.Ok(new(eventName, dateTime, duration, seasonId, theme, spectators));
+            return Result<Event>.Ok(new(id, eventName, dateTime, duration, seasonId, theme, spectators));
         }
 
         public Result UpdateName(string newName)

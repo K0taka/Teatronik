@@ -17,14 +17,18 @@ namespace Teatronik.Core.Models
 
         public Kind(string kindName) : this(Guid.NewGuid(), kindName) {}
 
-        public static Result<Kind> Create(string kindName)
+        public static Result<Kind> Create(string kindName) => Initialize(Guid.NewGuid(), kindName);
+
+        public static Result<Kind> Initialize(Guid id, string kindName)
         {
+            if (Guid.Empty.Equals(id))
+                return Result<Kind>.Fail("Kind id must be not empty");
             if (string.IsNullOrWhiteSpace(kindName))
                 return Result<Kind>.Fail("Kind name must be not empty");
             if (kindName.Length > MAX_KIND_NAME_LENGTH)
                 return Result<Kind>.Fail($"Kind name must be not graeter than {MAX_KIND_NAME_LENGTH}");
 
-            return Result<Kind>.Ok(new(kindName));
+            return Result<Kind>.Ok(new(id, kindName));
         }
 
         public Result UpdateName(string name)

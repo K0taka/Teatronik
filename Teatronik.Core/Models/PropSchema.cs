@@ -24,8 +24,13 @@ namespace Teatronik.Core.Models
             this(Guid.NewGuid(), schemaName, length, width, height)
         { }
 
-        public static Result<PropSchema> Create(string schemaName, float length, float width, float height)
+        public static Result<PropSchema> Create(string schemaName, float length, float width, float height) =>
+            Initialize(Guid.NewGuid(), schemaName, length, width, height);
+
+        public static Result<PropSchema> Initialize(Guid id, string schemaName, float length, float width, float height)
         {
+            if (Guid.Empty.Equals(id))
+                return Result<PropSchema>.Fail("Id must be declared");
             if (string.IsNullOrWhiteSpace(schemaName))
                 return Result<PropSchema>.Fail("Schema name must be not empty");
 
@@ -41,7 +46,7 @@ namespace Teatronik.Core.Models
             if (height <= 0)
                 return Result<PropSchema>.Fail("Height must be positive");
 
-            return Result<PropSchema>.Ok(new(schemaName, length, width, height));
+            return Result<PropSchema>.Ok(new(id, schemaName, length, width, height));
         }
 
         public Result UpdateName(string name)
