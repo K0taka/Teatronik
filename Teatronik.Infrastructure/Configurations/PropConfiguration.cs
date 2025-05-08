@@ -1,0 +1,33 @@
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using Teatronik.Infrastructure.Entities;
+
+namespace Teatronik.Infrastructure.Configurations
+{
+    public class PropConfiguration : IEntityTypeConfiguration<PropEntity>
+    {
+        public void Configure(EntityTypeBuilder<PropEntity> builder)
+        {
+            builder.HasKey(p => p.Id);
+
+            builder.Property(p => p.PropName).IsRequired();
+
+            builder.Property(p => p.Created).IsRequired();
+
+            builder.Property(p => p.Schema).IsRequired();
+
+            builder
+                .HasOne(p => p.Schema)
+                .WithMany(s => s.Props);
+
+            builder
+                .HasMany(p => p.Events)
+                .WithMany(e => e.Props);
+
+            builder
+                .HasMany(p => p.Components)
+                .WithOne(c => c.Prop)
+                .HasForeignKey(c => c.PropId);
+        }
+    }
+}
