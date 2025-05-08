@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using Teatronik.Core.Models;
 using Teatronik.Infrastructure.Entities;
 
 namespace Teatronik.Infrastructure.Configurations
@@ -10,7 +11,9 @@ namespace Teatronik.Infrastructure.Configurations
         {
             builder.HasKey(x => x.Id);
 
-            builder.Property(s => s.SeasonName).IsRequired();
+            builder.Property(s => s.SeasonName)
+                .IsRequired()
+                .HasMaxLength(Season.MAX_SEASON_NAME_LENGTH);
 
             builder
                 .HasMany(s => s.Events)

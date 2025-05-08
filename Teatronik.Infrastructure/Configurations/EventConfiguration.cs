@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using Teatronik.Core.Models;
 using Teatronik.Infrastructure.Entities;
 
 namespace Teatronik.Infrastructure.Configurations
@@ -10,7 +11,12 @@ namespace Teatronik.Infrastructure.Configurations
         {
             builder.HasKey(e => e.Id);
 
-            builder.Property(e => e.EventName).IsRequired();
+            builder.Property(e => e.EventName)
+                .IsRequired()
+                .HasMaxLength(Event.MAX_EVENT_NAME_LENGTH);
+
+            builder.Property(e => e.Theme)
+                .HasMaxLength(Event.MAX_EVENT_THEME_LENGTH);
 
             builder.Property(e => e.DateTime).IsRequired();
 

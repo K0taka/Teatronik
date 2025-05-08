@@ -5,6 +5,9 @@ namespace Teatronik.Core.Models
 {
     public partial class User
     {
+        public const int MAX_NAME_LENGTH = 150;
+        public const int MAX_EMAIL_LENGTH = 100;
+        public const int MAX_PASSWORD_HASH = 60;
         public const int MIN_PASSWORD_LENGTH = 8;
 
         public Guid Id { get; }
@@ -28,8 +31,15 @@ namespace Teatronik.Core.Models
             if (string.IsNullOrWhiteSpace(fullName))
                 return Result<User>.Fail("Full name is required");
 
+            if (fullName.Length > MAX_NAME_LENGTH)
+                return Result<User>.Fail($"Name must be less than {MAX_NAME_LENGTH}");
+
+            if (email.Length > MAX_EMAIL_LENGTH)
+                return Result<User>.Fail($"Email must be less than {MAX_EMAIL_LENGTH}");
+
             if (string.IsNullOrWhiteSpace(email) || !IsValidEmail(email))
                 return Result<User>.Fail("Invalid email");
+
 
             if (string.IsNullOrWhiteSpace(password) || password.Length < MIN_PASSWORD_LENGTH)
                 return Result<User>.Fail("Password must be at least 8 characters");
@@ -63,6 +73,12 @@ namespace Teatronik.Core.Models
 
             if (string.IsNullOrWhiteSpace(newEmail) || !IsValidEmail(newEmail))
                 return Result.Fail("Invalid email");
+
+            if (newFullName.Length > MAX_NAME_LENGTH)
+                return Result<User>.Fail($"Name must be less than {MAX_NAME_LENGTH}");
+
+            if (newEmail.Length > MAX_EMAIL_LENGTH)
+                return Result<User>.Fail($"Email must be less than {MAX_EMAIL_LENGTH}");
 
 
             FullName = newFullName;

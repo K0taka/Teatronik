@@ -4,6 +4,9 @@ namespace Teatronik.Core.Models
 {
     public class Event
     {
+        public const int MAX_EVENT_NAME_LENGTH = 100;
+        public const int MAX_EVENT_THEME_LENGTH = 250;
+
         public Guid Id { get; }
         public string EventName { get; private set; }
         public DateTime DateTime { get; private set; }
@@ -53,11 +56,17 @@ namespace Teatronik.Core.Models
             if (string.IsNullOrWhiteSpace(eventName))
                 return Result<Event>.Fail("Event name must be not empty");
 
+            if (eventName.Length > MAX_EVENT_NAME_LENGTH)
+                return Result<Event>.Fail($"event name length must be not greater than {MAX_EVENT_NAME_LENGTH}");
+
             if (duration <= 0)
                 return Result<Event>.Fail("Duration of event is a positive integer number of minutes");
 
             if (seasonId.Equals(Guid.Empty))
                 return Result<Event>.Fail("SeasonId must be not empty");
+
+            if (theme != null && theme.Length > MAX_EVENT_THEME_LENGTH)
+                return Result<Event>.Fail($"event theme length must be not greater than {MAX_EVENT_THEME_LENGTH}");
 
             if (spectators != null && spectators < 0)
                 return Result<Event>.Fail("Spectatorn must be non-negative number");
@@ -69,6 +78,9 @@ namespace Teatronik.Core.Models
         {
             if (string.IsNullOrWhiteSpace(newName))
                 return Result.Fail("Name must be not empty");
+            if (newName.Length > MAX_EVENT_NAME_LENGTH)
+                return Result.Fail($"event name length must be not greater than {MAX_EVENT_NAME_LENGTH}");
+
             EventName = newName;
             return Result.Ok();
         }
@@ -97,7 +109,9 @@ namespace Teatronik.Core.Models
 
         public Result UpdateTheme(string theme)
         {
-            Theme = theme;
+            if (theme != null && theme.Length > MAX_EVENT_THEME_LENGTH)
+                return Result.Fail($"event theme length must be not greater than {MAX_EVENT_THEME_LENGTH}");
+            Theme = theme ?? string.Empty;
             return Result.Ok();
         }
 

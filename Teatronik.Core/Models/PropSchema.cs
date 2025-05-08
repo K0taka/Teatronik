@@ -4,6 +4,7 @@ namespace Teatronik.Core.Models
 {
     public class PropSchema
     {
+        public const int MAX_PROP_SCHEMA_NAME_LENGTH = 250;
         public Guid Id { get; }
         public string SchemaName { get; private set; }
         public float Length { get; private set; }
@@ -28,6 +29,9 @@ namespace Teatronik.Core.Models
             if (string.IsNullOrWhiteSpace(schemaName))
                 return Result<PropSchema>.Fail("Schema name must be not empty");
 
+            if (schemaName.Length > MAX_PROP_SCHEMA_NAME_LENGTH)
+                return Result<PropSchema>.Fail($"Schema name length must be not greater thab {MAX_PROP_SCHEMA_NAME_LENGTH}");
+
             if (length <= 0)
                 return Result<PropSchema>.Fail("Length must be positive");
 
@@ -44,6 +48,8 @@ namespace Teatronik.Core.Models
         {
             if (string.IsNullOrWhiteSpace(name))
                 return Result.Fail("Schema name must be not empty");
+            if (name.Length > MAX_PROP_SCHEMA_NAME_LENGTH)
+                return Result.Fail($"Schema name length must be not greater thab {MAX_PROP_SCHEMA_NAME_LENGTH}");
             SchemaName = name;
             return Result.Ok();
         }

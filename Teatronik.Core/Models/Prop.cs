@@ -4,6 +4,8 @@ namespace Teatronik.Core.Models
 {
     public class Prop
     {
+        public const int MAX_PROP_NAME_LENGTH = 250;
+
         public Guid Id { get; }
         public string PropName { get; private set; }
         public DateOnly Created { get; }
@@ -23,6 +25,8 @@ namespace Teatronik.Core.Models
         {
             if (string.IsNullOrWhiteSpace(propName))
                 return Result<Prop>.Fail("Prop name must be not empty");
+            if (propName.Length > MAX_PROP_NAME_LENGTH)
+                return Result<Prop>.Fail($"Prop name must be not greater than {MAX_PROP_NAME_LENGTH}");
             if (DateOnly.FromDateTime(DateTime.Now).CompareTo(created) < 0)
                 return Result<Prop>.Fail("Creation date must be not later than today");
             if (schemaId.Equals(Guid.Empty))
@@ -35,6 +39,9 @@ namespace Teatronik.Core.Models
         {
             if (string.IsNullOrWhiteSpace(propName))
                 return Result.Fail("Prop name must be not empty");
+            if (propName.Length > MAX_PROP_NAME_LENGTH)
+                return Result.Fail($"Prop name must be not greater than {MAX_PROP_NAME_LENGTH}");
+
             PropName = propName;
             return Result.Ok();
         }

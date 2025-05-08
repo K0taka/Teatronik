@@ -4,6 +4,8 @@ namespace Teatronik.Core.Models
 {
     public class ComponentModel
     {
+        public const int MAX_MODEL_NAME_LENGTH = 100;
+
         public Guid Id { get; }
         public string ModelName { get; private set; }
         public Guid TypeId { get; private set; }
@@ -25,6 +27,9 @@ namespace Teatronik.Core.Models
             if (string.IsNullOrWhiteSpace(modelName))
                 return Result<ComponentModel>.Fail("model name must be not empty");
 
+            if (modelName.Length > MAX_MODEL_NAME_LENGTH)
+                return Result<ComponentModel>.Fail($"model name length must be not greater than {MAX_MODEL_NAME_LENGTH}");
+
             if (typeId.Equals(Guid.Empty))
                 return Result<ComponentModel>.Fail("typeId must be not empty");
 
@@ -38,6 +43,8 @@ namespace Teatronik.Core.Models
         {
             if (string.IsNullOrWhiteSpace(newName))
                 return Result.Fail("name must be not empty");
+            if (newName.Length > MAX_MODEL_NAME_LENGTH)
+                return Result.Fail($"model name length must be not greater than {MAX_MODEL_NAME_LENGTH}");
             ModelName = newName;
             return Result.Ok();
         }

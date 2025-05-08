@@ -10,7 +10,9 @@ namespace Teatronik.Infrastructure.Configurations
         {
             builder.HasKey(r => r.Id);
 
-            builder.Property(r => r.RoleName).IsRequired();
+            builder.Property(r => r.RoleName)
+                .IsRequired()
+                .HasMaxLength(100);
 
             builder
                 .HasMany(r => r.Users)

@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using Teatronik.Core.Models;
 using Teatronik.Infrastructure.Entities;
 
 namespace Teatronik.Infrastructure.Configurations
@@ -10,7 +11,9 @@ namespace Teatronik.Infrastructure.Configurations
         { 
             builder.HasKey(k => k.Id);
 
-            builder.Property(k => k.KindName).IsRequired();
+            builder.Property(k => k.KindName)
+                .IsRequired()
+                .HasMaxLength(Kind.MAX_KIND_NAME_LENGTH);
 
             builder
                 .HasMany(k => k.ComponentModels)

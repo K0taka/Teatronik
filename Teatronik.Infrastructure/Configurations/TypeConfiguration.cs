@@ -10,7 +10,9 @@ namespace Teatronik.Infrastructure.Configurations
         {
             builder.HasKey(t => t.Id);
 
-            builder.Property(t => t.TypeName).IsRequired();
+            builder.Property(t => t.TypeName)
+                .IsRequired()
+                .HasMaxLength(Core.Models.Type.MAX_TYPE_NAME_LENGTH);
 
             builder
                 .HasMany(t => t.ComponentModels)
