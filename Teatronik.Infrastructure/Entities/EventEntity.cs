@@ -9,7 +9,7 @@
         public string Theme { get; set; } = string.Empty;
         public int Spectators { get; set; }
         public required Guid SeasonId { get; set; }
-        public required SeasonEntity Season { get; set; }
+        public SeasonEntity Season { get; set; }
 
         public ICollection<PropEntity> Props { get; set; } = [];
     }

@@ -6,16 +6,16 @@ namespace Teatronik.Infrastructure
 {
     public class TeatronikDbContext(DbContextOptions<TeatronikDbContext> options) : DbContext(options)
     {
-        DbSet<ComponentEntity> Components { get; set; }
-        DbSet<ComponentModelEntity> ComponentModels { get; set; }
-        DbSet<EventEntity> Events { get; set; }
-        DbSet<KindEntity> Kinds { get; set; }
-        DbSet<PropEntity> Props { get; set; }
-        DbSet<PropSchemaEntity> PropSchemas { get; set; }
-        DbSet<RoleEntity> Roles { get; set; }
-        DbSet<SeasonEntity> Seasons { get; set; }
-        DbSet<TypeEntity> Types { get; set; }
-        DbSet<UserEntity> Users { get; set; }
+        public DbSet<ComponentEntity> Components { get; set; }
+        public DbSet<ComponentModelEntity> ComponentModels { get; set; }
+        public DbSet<EventEntity> Events { get; set; }
+        public DbSet<KindEntity> Kinds { get; set; }
+        public DbSet<PropEntity> Props { get; set; }
+        public DbSet<PropSchemaEntity> PropSchemas { get; set; }
+        public DbSet<RoleEntity> Roles { get; set; }
+        public DbSet<SeasonEntity> Seasons { get; set; }
+        public DbSet<TypeEntity> Types { get; set; }
+        public DbSet<UserEntity> Users { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
