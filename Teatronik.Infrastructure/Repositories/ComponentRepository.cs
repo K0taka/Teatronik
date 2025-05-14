@@ -17,12 +17,16 @@ namespace Teatronik.Infrastructure.Repositories
 
         public async Task AddAsync(Component component)
         {
-
+            var entity = ComponentMapper.ToEntity(component);
+            await _context.Components.AddAsync(entity);
+            await _context.SaveChangesAsync();
         }
 
         public async Task DeleteAsync(string serialNumber)
         {
-            throw new NotImplementedException();
+            await _context.Components
+                .Where(cm => cm.SerialNumber == serialNumber)
+                .ExecuteDeleteAsync();
         }
 
         public async Task<List<Component>> GetAllAsync()
@@ -32,7 +36,6 @@ namespace Teatronik.Infrastructure.Repositories
                 .Select(e => ComponentMapper.ToModel(e))
                 .OfType<Component>()
                 .ToList();
-
         }
 
         public async Task<List<Component>> GetByFilterAsync(
@@ -75,7 +78,13 @@ namespace Teatronik.Infrastructure.Repositories
 
         public async Task UpdateAsync(Component component)
         {
-            throw new NotImplementedException();
+            await _context.Components
+                .Where(c => c.SerialNumber == component.SerialNumber)
+                .ExecuteUpdateAsync(e => e
+                   .SetProperty(c => c.AcquistionDate, _ => component.AcquisitionDate)
+                   .SetProperty(c => c.ModelId, _ => component.ModelId)
+                   .SetProperty(c => c.PropId, _ => component.PropId)
+                );
         }
     }
 }

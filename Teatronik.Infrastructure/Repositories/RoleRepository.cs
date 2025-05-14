@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using System.ComponentModel;
 using Teatronik.Core.Interfaces;
 using Teatronik.Core.Models;
 using Teatronik.Infrastructure.Mappers;
@@ -14,14 +15,18 @@ namespace Teatronik.Infrastructure.Repositories
             _context = context;
         }
 
-        public Task AddAsync(Role role)
+        public async Task AddAsync(Role role)
         {
-            throw new NotImplementedException();
+            var entity = RoleMapper.ToEntity(role);
+            await _context.Roles.AddAsync(entity);
+            await _context.SaveChangesAsync();
         }
 
-        public Task DeleteAsync(int id)
+        public async Task DeleteAsync(int id)
         {
-            throw new NotImplementedException();
+            await _context.Roles
+                .Where(cm => cm.Id == id)
+                .ExecuteDeleteAsync();
         }
 
         public async Task<List<Role>> GetAllAsync()
@@ -39,9 +44,13 @@ namespace Teatronik.Infrastructure.Repositories
             return RoleMapper.ToModel(entity);
         }
 
-        public Task UpdateAsync(Role role)
+        public async Task UpdateAsync(Role role)
         {
-            throw new NotImplementedException();
+            await _context.Roles
+                .Where(r => r.Id == role.Id)
+                .ExecuteUpdateAsync(e => e
+                    .SetProperty(r => r.RoleName, _ => role.RoleType.ToString())
+                );
         }
     }
 }

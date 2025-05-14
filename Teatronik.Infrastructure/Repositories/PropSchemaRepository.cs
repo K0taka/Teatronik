@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using System.ComponentModel;
 using System.Text.RegularExpressions;
 using Teatronik.Core.Interfaces;
 using Teatronik.Core.Models;
@@ -15,14 +16,18 @@ namespace Teatronik.Infrastructure.Repositories
             _context = context;
         }
 
-        public Task AddAsync(PropSchema propSchema)
+        public async Task AddAsync(PropSchema propSchema)
         {
-            throw new NotImplementedException();
+            var entity = PropSchemaMapper.ToEntity(propSchema);
+            await _context.PropSchemas.AddAsync(entity);
+            await _context.SaveChangesAsync();
         }
 
-        public Task DeleteAsync(Guid id)
+        public async Task DeleteAsync(Guid id)
         {
-            throw new NotImplementedException();
+            await _context.PropSchemas
+                .Where(cm => cm.Id == id)
+                .ExecuteDeleteAsync();
         }
 
         public async Task<List<PropSchema>> GetAllAsync()
@@ -52,9 +57,16 @@ namespace Teatronik.Infrastructure.Repositories
                 .ToList();
         }
 
-        public Task UpdateAsync(PropSchema propSchema)
+        public async Task UpdateAsync(PropSchema propSchema)
         {
-            throw new NotImplementedException();
+            await _context.PropSchemas
+                .Where(s => s.Id == propSchema.Id)
+                .ExecuteUpdateAsync(e => e
+                    .SetProperty(s => s.SchemaName, _ => propSchema.SchemaName)
+                    .SetProperty(s => s.Length, _ => propSchema.Length)
+                    .SetProperty(s => s.Width, _ => propSchema.Width)
+                    .SetProperty(s => s.Height, _ => propSchema.Height)
+                );
         }
     }
 }

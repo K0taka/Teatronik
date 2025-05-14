@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using System.ComponentModel;
 using System.Text.RegularExpressions;
 using Teatronik.Core.Interfaces;
 using Teatronik.Core.Models;
@@ -15,14 +16,18 @@ namespace Teatronik.Infrastructure.Repositories
             _context = context;
         }
 
-        public Task AddAsync(Season season)
+        public async Task AddAsync(Season season)
         {
-            throw new NotImplementedException();
+            var entity = SeasonMapper.ToEntity(season);
+            await _context.Seasons.AddAsync(entity);
+            await _context.SaveChangesAsync();
         }
 
-        public Task DeleteAsync(Guid id)
+        public async Task DeleteAsync(Guid id)
         {
-            throw new NotImplementedException();
+            await _context.Seasons
+                .Where(cm => cm.Id == id)
+                .ExecuteDeleteAsync();
         }
 
         public async Task<List<Season>> GetAllAsync()
@@ -54,9 +59,13 @@ namespace Teatronik.Infrastructure.Repositories
                 .ToList();
         }
 
-        public Task UpdateAsync(Season season)
+        public async Task UpdateAsync(Season season)
         {
-            throw new NotImplementedException();
+            await _context.Seasons
+                .Where(s => s.Id == season.Id)
+                .ExecuteUpdateAsync(e => e
+                    .SetProperty(s => s.SeasonName, _ => season.SeasonName)
+                );
         }
     }
 }

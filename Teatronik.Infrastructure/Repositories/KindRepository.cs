@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using System.ComponentModel;
 using System.Text.RegularExpressions;
 using Teatronik.Core.Interfaces;
 using Teatronik.Core.Models;
@@ -15,14 +16,18 @@ namespace Teatronik.Infrastructure.Repositories
             _context = context;
         }
 
-        public Task AddAsync(Kind kind)
+        public async Task AddAsync(Kind kind)
         {
-            throw new NotImplementedException();
+            var entity = KindMapper.ToEntity(kind);
+            await _context.Kinds.AddAsync(entity);
+            await _context.SaveChangesAsync();
         }
 
-        public Task DeleteAsync(Guid id)
+        public async Task DeleteAsync(Guid id)
         {
-            throw new NotImplementedException();
+            await _context.Kinds
+                .Where(cm => cm.Id == id)
+                .ExecuteDeleteAsync();
         }
 
         public async Task<List<Kind>> GetAllAsync()
@@ -52,9 +57,13 @@ namespace Teatronik.Infrastructure.Repositories
                 .ToList();
         }
 
-        public Task UpdateAsync(Kind kind)
+        public async Task UpdateAsync(Kind kind)
         {
-            throw new NotImplementedException();
+            await _context.Kinds
+                .Where(k => k.Id == kind.Id)
+                .ExecuteUpdateAsync(e => e
+                    .SetProperty(k => k.KindName, _ => kind.KindName)
+                );
         }
     }
 }

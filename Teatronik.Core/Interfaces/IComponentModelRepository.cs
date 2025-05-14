@@ -13,6 +13,7 @@ namespace Teatronik.Core.Interfaces
             );
         public Task AddAsync(ComponentModel componentModel);
         public Task DeleteAsync(Guid id);
+        public Task UpdateAsync(Guid id, string modelName, Guid kindId, Guid typeId);
         public Task UpdateAsync(ComponentModel componentModel);
     }
 }

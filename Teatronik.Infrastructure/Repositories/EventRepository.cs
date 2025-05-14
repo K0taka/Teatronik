@@ -17,12 +17,16 @@ namespace Teatronik.Infrastructure.Repositories
 
         public async Task AddAsync(Event ev)
         {
-            throw new NotImplementedException();
+            var entity = EventMapper.ToEntity(ev);
+            await _context.Events.AddAsync(entity);
+            await _context.SaveChangesAsync();
         }
 
         public async Task DeleteAsync(Guid id)
         {
-            throw new NotImplementedException();
+            await _context.Events
+                .Where(cm => cm.Id == id)
+                .ExecuteDeleteAsync();
         }
 
         public async Task<List<Event>> GetAllAsync()
@@ -60,7 +64,57 @@ namespace Teatronik.Infrastructure.Repositories
 
         public async Task UpdateAsync(Event ev)
         {
-            throw new NotImplementedException();
+            var existingEvent = await _context.Events
+                .Include(e => e.Props)
+                .FirstOrDefaultAsync(e => e.Id == ev.Id);
+
+            if (existingEvent == null)
+                throw new Exception($"Event with id {ev.Id} not found");
+
+            
+            _context.Entry(existingEvent).CurrentValues.SetValues(new
+            {
+                ev.EventName,
+                ev.Theme,
+                ev.DateTime,
+                ev.Duration,
+                ev.SeasonId,
+                ev.Spectators
+            });
+
+          
+            var propsToRemove = existingEvent.Props
+                .Where(existingProp => !ev.Props.Any(newProp => newProp.Id == existingProp.Id))
+                .ToList();
+
+            foreach (var prop in propsToRemove)
+            {
+                existingEvent.Props.Remove(prop);
+            }
+
+            
+            foreach (var newProp in ev.Props)
+            {
+                var existingProp = existingEvent.Props
+                    .FirstOrDefault(p => p.Id == newProp.Id);
+
+                if (existingProp == null)
+                {
+                    
+                    existingEvent.Props.Add(PropMapper.ToEntity(newProp));
+                }
+                else
+                {
+                    
+                    _context.Entry(existingProp).CurrentValues.SetValues(new
+                    {
+                        newProp.PropName,
+                        newProp.SchemaId
+                    });
+                }
+            }
+
+            await _context.SaveChangesAsync();
         }
     }
 }

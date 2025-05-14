@@ -14,14 +14,18 @@ namespace Teatronik.Infrastructure.Repositories
             _context = context;
         }
 
-        public Task AddAsync(Core.Models.Type type)
+        public async Task AddAsync(Core.Models.Type type)
         {
-            throw new NotImplementedException();
+            var entity = TypeMapper.ToEntity(type);
+            await _context.Types.AddAsync(entity);
+            await _context.SaveChangesAsync();
         }
 
-        public Task DeleteAsync(Guid id)
+        public async Task DeleteAsync(Guid id)
         {
-            throw new NotImplementedException();
+            await _context.Types
+                .Where(cm => cm.Id == id)
+                .ExecuteDeleteAsync();
         }
 
         public async Task<List<Core.Models.Type>> GetAllAsync()
@@ -51,9 +55,13 @@ namespace Teatronik.Infrastructure.Repositories
                 .ToList();
         }
 
-        public Task UpdateAsync(Core.Models.Type type)
+        public async Task UpdateAsync(Core.Models.Type type)
         {
-            throw new NotImplementedException();
+            await _context.Types
+                .Where(t => t.Id == type.Id)
+                .ExecuteUpdateAsync(e => e
+                    .SetProperty(t => t.TypeName, _ => type.TypeName)
+                );
         }
     }
 }

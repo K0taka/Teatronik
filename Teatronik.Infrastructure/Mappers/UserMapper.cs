@@ -34,7 +34,12 @@ namespace Teatronik.Infrastructure.Mappers
                 Email = user.Email,
                 FullName = user.FullName,
                 PasswordHash = user.PasswordHash,
-                RegistrationDate = user.RegistrationDate
+                RegistrationDate = user.RegistrationDate,
+                Roles = user.Roles.Select(role => new RoleEntity
+                {
+                    Id = (int)role,
+                    RoleName = role.ToString()
+                }).ToList()
             };
         }
     }

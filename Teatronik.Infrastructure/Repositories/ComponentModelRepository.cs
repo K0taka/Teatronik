@@ -17,12 +17,16 @@ namespace Teatronik.Infrastructure.Repositories
 
         public async Task AddAsync(ComponentModel componentModel)
         {
-            
+            var entity = ComponentModelMapper.ToEntity(componentModel);
+            await _context.ComponentModels.AddAsync(entity);
+            await _context.SaveChangesAsync();
         }
 
         public async Task DeleteAsync(Guid id)
         {
-            
+            await _context.ComponentModels
+                .Where(cm => cm.Id == id)
+                .ExecuteDeleteAsync();
         }
 
         public async Task<List<ComponentModel>> GetAllAsync()
@@ -64,10 +68,26 @@ namespace Teatronik.Infrastructure.Repositories
             var model = ComponentModel.Create(modelEntity.ModelName, modelEntity.TypeId, modelEntity.KindId);
             return model.IsSuccess ? model.Value : null;
         }
+        
+        public async Task UpdateAsync(Guid id, string modelName, Guid kindId, Guid typeId)
+        {
+            await _context.ComponentModels
+                .Where(cm => cm.Id == id)
+                .ExecuteUpdateAsync(e => e
+                    .SetProperty(cm => cm.ModelName, _ => modelName)
+                    .SetProperty(cm => cm.KindId, _ => kindId)
+                    .SetProperty(cm => cm.TypeId, _ => typeId));
+
+        }
 
         public async Task UpdateAsync(ComponentModel componentModel)
         {
-            
+            await _context.ComponentModels
+               .Where(cm => cm.Id == componentModel.Id)
+               .ExecuteUpdateAsync(e => e
+                   .SetProperty(cm => cm.ModelName, _ => componentModel.ModelName)
+                   .SetProperty(cm => cm.KindId, _ => componentModel.KindId)
+                   .SetProperty(cm => cm.TypeId, _ => componentModel.TypeId));
         }
     }
 }

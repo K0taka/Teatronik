@@ -14,6 +14,8 @@ namespace Teatronik.Core.Models
         public Guid SeasonId { get; private set; }
         public string Theme { get; private set; }
         public int Spectators { get; private set; }
+
+        public ICollection<Prop> Props { get; private set; } = [];
         
         private Event(
             Guid id,
@@ -133,6 +135,22 @@ namespace Teatronik.Core.Models
             if (spectators <= 0)
                 return Result.Fail("Spectators must be non-negative number");
             Spectators = spectators;
+            return Result.Ok();
+        }
+
+        public Result AddProp(Prop prop)
+        {
+            if (Props.Contains(prop))
+                return Result.Fail("Selected prop is already assigned");
+            Props.Add(prop);
+            return Result.Ok();
+        }
+
+        public Result RemoveProp(Prop prop)
+        {
+            if (!Props.Contains(prop))
+                return Result.Fail("Selected prop is not used");
+            Props.Remove(prop);
             return Result.Ok();
         }
 

@@ -1,7 +1,10 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using System.ComponentModel;
 using System.Text.RegularExpressions;
+using Teatronik.Core.Enums;
 using Teatronik.Core.Interfaces;
 using Teatronik.Core.Models;
+using Teatronik.Infrastructure.Entities;
 using Teatronik.Infrastructure.Mappers;
 
 namespace Teatronik.Infrastructure.Repositories
@@ -15,14 +18,18 @@ namespace Teatronik.Infrastructure.Repositories
             _context = context;
         }
 
-        public Task AddAsync(User user)
+        public async Task AddAsync(User user)
         {
-            throw new NotImplementedException();
+            var entity = UserMapper.ToEntity(user);
+            await _context.Users.AddAsync(entity);
+            await _context.SaveChangesAsync();
         }
 
-        public Task DeleteAsync(Guid id)
+        public async Task DeleteAsync(Guid id)
         {
-            throw new NotImplementedException();
+            await _context.Users
+                .Where(cm => cm.Id == id)
+                .ExecuteDeleteAsync();
         }
 
         public async Task<List<User>> GetAllAsync()
@@ -56,9 +63,46 @@ namespace Teatronik.Infrastructure.Repositories
             return UserMapper.ToModel(entity);
         }
 
-        public Task UpdateAsync(User user)
+        public async Task UpdateAsync(User user)
         {
-            throw new NotImplementedException();
+            var existingUser = await _context.Users
+                .Include(u => u.Roles)
+                .FirstOrDefaultAsync(u => u.Id == user.Id);
+
+            if (existingUser == null)
+                throw new Exception($"User with id {user.Id} not found");
+
+            _context.Entry(existingUser).CurrentValues.SetValues(new
+            {
+                user.Email,
+                user.FullName,
+                user.PasswordHash,
+                user.RegistrationDate
+            });
+
+            var newRoles = user.Roles;
+            var rolesToRemove = existingUser.Roles
+                .Where(existingRole => !newRoles.Any(newRole => existingRole.RoleName == newRole.ToString()))
+                .ToList();
+
+            foreach (var role in rolesToRemove)
+            {
+                existingUser.Roles.Remove(role);
+            }
+
+            foreach (var roleType in newRoles)
+            {
+                if (!existingUser.Roles.Any(r => r.RoleName == roleType.ToString()))
+                {
+                    existingUser.Roles.Add(new RoleEntity
+                    {
+                        RoleName = roleType.ToString(),
+                        Id = (int)roleType
+                    });
+                }
+            }
+
+            await _context.SaveChangesAsync();
         }
     }
 }
