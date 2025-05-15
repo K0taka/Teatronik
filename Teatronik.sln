@@ -11,6 +11,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Teatronik.Core", "Teatronik
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Teatronik.Infrastructure", "Teatronik.Infrastructure\Teatronik.Infrastructure.csproj", "{B5CEE565-5570-44D4-BABB-A47A54F9299B}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Teatronik.Application", "Teatronik.Application\Teatronik.Application.csproj", "{0AE5278E-AD0A-4337-81BC-CD973CBF5CA5}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +35,10 @@ Global
 		{B5CEE565-5570-44D4-BABB-A47A54F9299B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B5CEE565-5570-44D4-BABB-A47A54F9299B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B5CEE565-5570-44D4-BABB-A47A54F9299B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0AE5278E-AD0A-4337-81BC-CD973CBF5CA5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0AE5278E-AD0A-4337-81BC-CD973CBF5CA5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0AE5278E-AD0A-4337-81BC-CD973CBF5CA5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0AE5278E-AD0A-4337-81BC-CD973CBF5CA5}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

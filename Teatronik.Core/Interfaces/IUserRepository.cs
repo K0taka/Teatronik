@@ -7,7 +7,7 @@ namespace Teatronik.Core.Interfaces
         public Task<List<User>> GetAllAsync();
         public Task<User?> GetByIdAsync(Guid id);
         public Task<List<User>> GetByFilter(
-            string? name,
+            string? name = null,
             DateTime? fromDate = null,
             DateTime? toDate = null
             );

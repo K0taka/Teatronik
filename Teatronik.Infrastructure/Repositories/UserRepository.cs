@@ -41,7 +41,7 @@ namespace Teatronik.Infrastructure.Repositories
                 .ToList();
         }
 
-        public async Task<List<User>> GetByFilter(string? name, DateTime? fromDate = null, DateTime? toDate = null)
+        public async Task<List<User>> GetByFilter(string? name = null, DateTime? fromDate = null, DateTime? toDate = null)
         {
             var query = _context.Users.AsNoTracking();
             if (!string.IsNullOrEmpty(name))
