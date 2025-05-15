@@ -17,7 +17,7 @@ namespace Teatronik.Infrastructure.Configurations
 
             builder.Property(p => p.Created).IsRequired();
 
-            builder.Property(p => p.Schema).IsRequired();
+            builder.Property(p => p.SchemaId).IsRequired();
 
             builder
                 .HasOne(p => p.Schema)
