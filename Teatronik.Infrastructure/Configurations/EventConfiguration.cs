@@ -26,7 +26,8 @@ namespace Teatronik.Infrastructure.Configurations
 
             builder
                 .HasOne(e => e.Season)
-                .WithMany(s => s.Events);
+                .WithMany(s => s.Events)
+                .OnDelete(DeleteBehavior.Restrict);
 
             builder
                 .HasMany(e => e.Props)

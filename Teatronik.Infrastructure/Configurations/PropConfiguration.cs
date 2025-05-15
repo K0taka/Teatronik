@@ -21,7 +21,8 @@ namespace Teatronik.Infrastructure.Configurations
 
             builder
                 .HasOne(p => p.Schema)
-                .WithMany(s => s.Props);
+                .WithMany(s => s.Props)
+                .OnDelete(DeleteBehavior.Restrict);
 
             builder
                 .HasMany(p => p.Events)

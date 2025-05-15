@@ -17,11 +17,13 @@ namespace Teatronik.Infrastructure.Configurations
 
             builder
                 .HasOne(c => c.Model)
-                .WithMany(m => m.Components);
+                .WithMany(m => m.Components)
+                .OnDelete(DeleteBehavior.Restrict);
 
             builder
                 .HasOne(c => c.Prop)
-                .WithMany(p => p.Components);
+                .WithMany(p => p.Components)
+                .OnDelete(DeleteBehavior.SetNull);
 
         }
     }
