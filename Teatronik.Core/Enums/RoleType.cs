@@ -2,9 +2,9 @@
 {
     public enum RoleType
     {
-        WorkshopManager,
-        ArtisticDirector,
-        PropManager,
-        Admin
+        WorkshopManager = 1,
+        ArtisticDirector = 2,
+        PropManager = 3,
+        Admin = 4
     }
 }

@@ -1,7 +1,9 @@
 using Microsoft.EntityFrameworkCore;
 using Teatronik.Application;
+using Teatronik.Core.Enums;
 using Teatronik.Core.Interfaces;
 using Teatronik.Infrastructure;
+using Teatronik.Infrastructure.Entities;
 using Teatronik.Infrastructure.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -56,6 +58,28 @@ builder.Services.AddControllers()
     });
 
 var app = builder.Build();
+
+using (var scope = app.Services.CreateScope())
+{
+    var services = scope.ServiceProvider;
+    var dbContext = services.GetRequiredService<TeatronikDbContext>();
+    
+    var included = await dbContext.Roles.Select(e => e.RoleName).ToListAsync();
+    var allRoles = Enum.GetValues(typeof(RoleType)).Cast<RoleType>();
+
+    foreach (var role in allRoles)
+    {
+        if (included.Contains(role.ToString()))
+            continue;
+        await dbContext.Roles.AddAsync(new RoleEntity
+        {
+            Id = (int)role,
+            RoleName = role.ToString(),
+        });
+    }
+
+    dbContext.SaveChanges();
+}
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
