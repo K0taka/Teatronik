@@ -11,7 +11,9 @@ namespace Teatronik.Core.Interfaces
             bool? isUsed = null,
             string? name = null,
             Guid[]? typeIds = null,
-            Guid[]? kindIds = null
+            Guid[]? kindIds = null,
+            Guid? modelId = null,
+            Guid? propId = null
             );
 
         public Task AddAsync(Component component);

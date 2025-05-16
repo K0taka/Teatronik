@@ -8,7 +8,7 @@ namespace Teatronik.Core.Interfaces
         Task<Result> AddAsync(Season season);
         Task<Result> DeleteAsync(Guid id);
         Task<Result<List<Season>>> GetAllAsync();
-        Task<Result<Season?>> GetByIdAsynk(Guid id);
+        Task<Result<Season?>> GetByIdAsync(Guid id);
         Task<Result<List<Season>>> GetByNameAsync(string name);
         Task<Result> UpdateAsync(Season season);
     }

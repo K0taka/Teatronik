@@ -16,7 +16,7 @@ namespace Teatronik.Application
         public async Task<Result<List<Season>>> GetAllAsync() =>
             Result<List<Season>>.Ok(await _seasonRepository.GetAllAsync());
 
-        public async Task<Result<Season?>> GetByIdAsynk(Guid id)
+        public async Task<Result<Season?>> GetByIdAsync(Guid id)
         {
             if (id == Guid.Empty)
                 return Result<Season?>.Fail("id is empty");

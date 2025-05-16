@@ -1,7 +1,7 @@
 ﻿using Teatronik.Core.Common;
 using Teatronik.Core.Models;
 
-namespace Teatronik.Application
+namespace Teatronik.Core.Interfaces
 {
     public interface IPropSchemaService
     {

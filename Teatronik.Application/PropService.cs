@@ -37,7 +37,7 @@ namespace Teatronik.Application
                 toDate
                 ));
 
-        public async Task<Result> AddAsybc(Prop prop)
+        public async Task<Result> AddAsync(Prop prop)
         {
             if (prop == null)
                 return Result.Fail("prop was null");

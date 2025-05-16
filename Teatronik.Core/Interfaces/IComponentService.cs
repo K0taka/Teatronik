@@ -8,7 +8,7 @@ namespace Teatronik.Core.Interfaces
         Task<Result> AddAsync(Component component);
         Task<Result> DeleteAsync(string serialNumber);
         Task<Result<List<Component>>> GetAllAsync();
-        Task<Result<List<Component>>> GetByFilterAsync(bool? isUsed = null, string? name = null, Guid[]? typeIds = null, Guid[]? kindIds = null);
+        Task<Result<List<Component>>> GetByFilterAsync(bool? isUsed = null, string? name = null, Guid[]? typeIds = null, Guid[]? kindIds = null, Guid? modelId = null, Guid? propId = null);
         Task<Result<Component?>> GetBySerialAsync(string serialNumber);
         Task<Result> UpdateAsync(Component component);
     }

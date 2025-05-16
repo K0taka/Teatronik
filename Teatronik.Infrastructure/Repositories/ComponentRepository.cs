@@ -42,7 +42,9 @@ namespace Teatronik.Infrastructure.Repositories
             bool? isUsed = null,
             string? name = null,
             Guid[]? typeIds = null,
-            Guid[]? kindIds = null)
+            Guid[]? kindIds = null,
+            Guid? modelId = null,
+            Guid? propId = null)
         {
             var query = _context.Components.AsNoTracking();
             if (!string.IsNullOrEmpty(name))
@@ -55,6 +57,12 @@ namespace Teatronik.Infrastructure.Repositories
 
             if (kindIds?.Length > 0)
                 query = query.Where(c => kindIds.Contains(c.Model.KindId));
+
+            if(modelId.HasValue && modelId.Value != Guid.Empty)
+                query = query.Where(c => c.ModelId == modelId.Value);
+
+            if(propId.HasValue && propId.Value != Guid.Empty)
+                query = query.Where(c => c.PropId == propId.Value);
 
             if (isUsed.HasValue)
                 query = isUsed.Value

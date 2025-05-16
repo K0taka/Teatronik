@@ -2,6 +2,6 @@
 {
     public record SeasonResponse(
         Guid Id,
-        Guid SeasonName
+        string SeasonName
         );
 }

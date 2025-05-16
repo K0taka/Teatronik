@@ -28,9 +28,11 @@ namespace Teatronik.Application
             bool? isUsed = null,
             string? name = null,
             Guid[]? typeIds = null,
-            Guid[]? kindIds = null
+            Guid[]? kindIds = null,
+            Guid? modelId = null,
+            Guid? propId = null
             ) => Result<List<Component>>.Ok(await _componentRepository.GetByFilterAsync(
-                isUsed, name, typeIds, kindIds));
+                isUsed, name, typeIds, kindIds, modelId, propId));
 
         public async Task<Result> AddAsync(Component component)
         {
